@@ -1,27 +1,33 @@
-angular.module('AllowanceApp').factory('UserService',[function() {
+'use strict';
 
-	var UserService = {};
+var UserService = angular.module('UserService', ['ngResource']);
 
-	UserService.getAllUsers = function() {
-		console.log('get all users');
+UserService.factory('UserService', ['$http', function($http) {
+
+	var apiKey = 'UQLD_WO4wNXMFL-fAo5YZSjTFUnBoS9v';
+
+	return {
+
+		getAllUsers: function() {
+
+			return(
+			$http({
+				method:'GET',
+				url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/users?apiKey='+ apiKey
+			}).then(function success(data) {
+				//success function here
+				return data.data;
+
+			}, function error(data) {
+				//error function here
+				return data.statusText;
+			}));
+
+		}
+
+
+
+				
 	}
-
-	UserService.getUserById = function(id) {
-		console.log('get user by id');
-	}
-
-	UserService.createUser = function(obj) {
-		console.log('create user');
-	}
-
-	UserService.deleteUser = function(id) {
-		console.log('delete user by id');
-	}
-
-	UserService.updateUser = function(obj) {
-		console.log('update user');
-	}
-
-	return UserService;
 
 }]);

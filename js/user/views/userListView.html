@@ -1,0 +1,16 @@
+<div id="userList">
+
+	<div ng-if="userList.length === 0">
+		<p>There are no users</p>
+		<p><a href="#/users/add">Click here to add one!</a></p>
+	</div>
+
+	<div ng-if="userList === undefined">
+		<p>Loading users</p>
+	</div>
+
+	<div ng-if="userList.length > 0">
+		<p>There are {{userList.length}} users</p>
+	</div>
+
+</div>
