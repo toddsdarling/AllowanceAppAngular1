@@ -1,0 +1,22 @@
+{
+  "name": "allowanceapp-angular1",
+  "description": "Allowance app built in Angular 1",
+  "main": "index.html",
+  "authors": [
+    "Todd Darling"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.5",
+    "angular-ui-router": "^0.2.18"
+  }
+}
