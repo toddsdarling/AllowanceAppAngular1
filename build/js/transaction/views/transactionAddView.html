@@ -1,0 +1,27 @@
+<div id="addTransaction">
+
+	<form ng-submit="handleTransaction()">
+
+		<div>
+			<label for="transactionAmount">Amount*:</label> 
+			<input id="transactionAmount" ng-model="transactionToBeAdded.amount" name="transactionAmount">
+		</div>
+
+		<div>
+			<label for="transactionBucket">Bucket*:</label>
+			<input id="transactionBucket" ng-model="transactionToBeAdded.bucket" name="transactionBucket">
+		</div>
+
+		<div ng-if="transactionToBeAdded.type === 'dep'">
+			<p><input type="submit" name="Deposit" value="Deposit" /></p>
+		</div>
+
+		<div ng-if="transactionToBeAdded.type === 'with'">
+			<p><input type="submit" name="Withdraw" value="Withdraw" /></p>
+		</div>		
+
+	</form>
+
+
+
+</div>

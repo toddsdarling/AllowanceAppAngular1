@@ -1,0 +1,18 @@
+<div id="transactionList">
+
+	<h2>Transactions for {{currentUser.fname}} {{currentUser.lname}}</h2>
+
+	<div ng-if="transactionList.length === 0">
+		<p>There are no transctions for this user</p>
+		<p><a href="#/transactions/add?type=with&userID={{currentUser._id.$oid}}">Deposit money!</a> | <a href="#/transactions/add?type=with&userID={{currentUser._id.$oid}}">Withdraw money!</a> </p>
+	</div>
+
+	<div ng-if="transactionList === undefined">
+		<p>Loading transactions</p>
+	</div>
+
+	<div ui-view="addTransaction" id="transactionView">
+
+	</div>
+
+</div>
