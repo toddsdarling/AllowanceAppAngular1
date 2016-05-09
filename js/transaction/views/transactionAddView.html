@@ -1,15 +1,18 @@
 <div id="addTransaction">
 
-	<form ng-submit="handleTransaction()">
+	<form ng-submit="handleTransactionAdd()">
 
 		<div>
-			<label for="transactionAmount">Amount*:</label> 
+			<label ng-show="transactionToBeAdded.type == 'dep'" for="transactionAmount">Amount to deposit*:</label>
+			<label ng-show="transactionToBeAdded.type == 'with'" for="transactionAmount">Amount to withdraw*:</label> 
 			<input id="transactionAmount" ng-model="transactionToBeAdded.amount" name="transactionAmount">
 		</div>
 
 		<div>
 			<label for="transactionBucket">Bucket*:</label>
-			<input id="transactionBucket" ng-model="transactionToBeAdded.bucket" name="transactionBucket">
+			<select name="transactionBucket" ng-model="transactionToBeAdded.bucket" id="transactionBucket">
+				<option ng-repeat="bucket in buckets" value="{{bucket._id.$oid}}">{{bucket.name}}</option>
+			</select>			
 		</div>
 
 		<div ng-if="transactionToBeAdded.type === 'dep'">
@@ -21,7 +24,5 @@
 		</div>		
 
 	</form>
-
-
 
 </div>

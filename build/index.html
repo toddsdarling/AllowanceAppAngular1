@@ -8,10 +8,10 @@
 <body>
 
 	<header class="appHeader" id="header">
-		<h1>Allowance App</h1>
+		<h1>Allowance App blah</h1>
 	</header>
 
-	<div id="main" ng-controller="UserController">
+	<div ng-view id="main">
 
 	</div>
 
@@ -21,10 +21,21 @@
 
 
 <!-- vendor JS here -->
-<script src="js/vendor.js"></script>
+<!-- build:vendorjs /js/vendor.js -->
+<script src="/bower_components/angular/angular.min.js"></script>
+<script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<!-- endbuild -->
 
 <!-- our JS here -->
+<script src="js/user/userService.js"></script>
+<script src="js/transaction/transactionService.js"></script>
+<script src="js/user/controllers/userController.js"></script>
+<script src="js/user/controllers/addUser.js"></script>
+<script src="js/user/controllers/editUser.js"></script>
+<script src="js/transaction/controllers/viewTransactions.js"></script>
 <script src="js/main.js"></script>
+
+
 
 
 </html>

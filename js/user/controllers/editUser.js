@@ -19,11 +19,19 @@ angular.module('EditUserController').controller('EditUserController', ['$scope',
 
 			//call user service to add the user
 			UserService.updateUser(this.userToBeEdited).then(function(response) {
-				console.log(response);
+
+				alert('User updated successfully!');
+
+				setTimeout(function() {
+					//navigate back to user list
+					$state.go('/');
+				}, 500)
+
 			});
 
 		} else {
 			//validation errors here
+			alert('Please fill out all the fields!');
 		}
 
 

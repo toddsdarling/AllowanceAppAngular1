@@ -1,0 +1,22 @@
+<div id="editTransaction">
+
+	<form ng-submit="handleTransactionEdit()">
+
+		<div>
+			<label ng-show="transactionToBeEdited.type == 'dep'" for="transactionAmount">Amount to deposit*:</label>
+			<label ng-show="transactionToBeEdited.type == 'with'" for="transactionAmount">Amount to withdraw*:</label> 
+			<input id="transactionAmount" ng-model="transactionToBeEdited.amount" name="transactionAmount">
+		</div>
+
+		<div>
+			<label for="transactionBucket">Bucket*:</label>
+			<select name="transactionBucket" ng-model="transactionToBeEdited.bucket" id="transactionBucket">
+				<option ng-repeat="bucket in buckets" value="{{bucket._id.$oid}}">{{bucket.name}}</option>
+			</select>			
+		</div>
+
+		<p><input type="submit" name="Edit" value="Edit" /></p>
+		
+	</form>
+
+</div>

@@ -1,23 +1,42 @@
 <div id="addUser">
 
+	<h2>Add user</h2>
+
 	<form ng-submit="handleAddUserSubmission()">
 
-	<div>
-		<label for="userFirstName">First name:</label> 
-		<input id="userFirstName" name="userFirstName" value="">
-	</div>
+		<div>
+			<label for="userFirstName">First name*:</label> 
+			<input id="userFirstName" ng-model="userToBeAdded.fname" name="userFirstName">
+		</div>
 
-	<div>
-		<label for="userLastName">Last name:</label>
-		<input id="userLastName" name="userLastName" value="">
-	</div>
+		<div>
+			<label for="userLastName">Last name*:</label>
+			<input id="userLastName" ng-model="userToBeAdded.lname" name="userLastName">
+		</div>
 
-	<div>
-		<label for="userEmail">Email:</label>
-		<input id="userEmail" name="userEmail" value="">
-	</div>
+		<div>
+			<label for="userEmail">Email:</label>
+			<input id="userEmail" ng-model="userToBeAdded.email" name="userEmail">
+		</div>
 
-	<input type="submit" name="Add User" value="Add User" />
+
+<!-- 		<div>
+			<label for="userRole">Is this user parent or child?*</label>
+			<select id="userRole" name="userRole" ng-model="userToBeAdded.userRole">
+				<option value="">select...</option>
+				<option value="parent">Parent</option>
+				<option value="child">Child</option>
+			</select>	
+		</div>
+
+		<div>
+		<label for="userFamily">Family*:</label>
+			<select id="userFamily" name="userFamily" ng-model="userToBeAdded.userFamily">
+				<option value="">select...</option>
+			</select>		
+		</div>	 -->
+
+		<input type="submit" name="Add User" value="Add User" />
 
 
 	</form>
