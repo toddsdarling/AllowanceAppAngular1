@@ -1,0 +1,25 @@
+<div id="addBucket">
+
+	<h2>Edit bucket {{bucketToBeEdited.name}}</h2>
+
+	<form ng-submit="handleEditBucket()">
+
+		<div>
+			<label for="bucketName">Name*:</label>
+			<input id="bucketName" ng-model="bucketToBeEdited.name" name="bucketName">		
+		</div>
+
+		<h3>Add sub-buckets</h3>
+		<p><a href="#" ng-click="handleSubBucketFields('add'); $event.preventDefault()">Add new sub-bucket</a></p>
+
+		<div ng-repeat="subBucket in bucketToBeEdited.subBuckets">
+			<label for="subBucket">Name*:</label>
+			<input ng-model="subBucket.name" name="">
+			<a href="#" ng-show="$last" ng-click="handleSubBucketFields('remove'); $event.preventDefault()">Remove</a>
+		</div>
+
+		<p><input type="submit" name="Edit Bucket" value="Edit Bucket" />
+
+	</form>
+
+</div>
