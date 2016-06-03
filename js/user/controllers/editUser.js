@@ -1,15 +1,11 @@
 'use strict';
 
 angular.module('EditUserController', ['UserService']);
-angular.module('EditUserController').controller('EditUserController', ['$scope', 'UserService', '$stateParams', function($scope, UserService, $stateParams) {
+angular.module('EditUserController').controller('EditUserController', ['$scope', 'UserService', '$stateParams', 'userData', 'BucketService', function($scope, UserService, $stateParams, userData, BucketService) {
 
-
-	$scope.userToBeEdited = {};
-
-
-	UserService.getUser($stateParams.userID).then(function(response) {
-		$scope.userToBeEdited = response;
-	});
+	//set the user info on the scope. These were resolved from the promise on the router before we got to this view
+	$scope.userToBeEdited = userData.user;
+	$scope.userBuckets = userData.buckets;
 
 	$scope.handleEditUser = function() {
 
@@ -34,9 +30,10 @@ angular.module('EditUserController').controller('EditUserController', ['$scope',
 			alert('Please fill out all the fields!');
 		}
 
+	}
 
-
-
+	$scope.handleDeleteBucket = function() {
+		
 	}
 
 

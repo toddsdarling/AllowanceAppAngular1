@@ -19,6 +19,23 @@
 			<input id="userEmail" ng-model="userToBeEdited.email" name="userEmail">
 		</div>
 
+		<div>
+
+			<p>Buckets:
+				<br />
+				<a href="#/buckets/add/{{userToBeEdited._id.$oid}}">Add new bucket</a>
+			</p>
+			<ul>
+				<li ng-repeat="bucketObj in userBuckets">
+					{{bucketObj.name}} (<a href="#/bucket/edit/{{bucketObj._id.$oid}}">Edit</a> | <a href="#" ng-click="handleDeleteBucket(); $event.preventDefault();">Delete</a>)
+					<ul ng-if="bucketObj.subBuckets.length > 0">
+						<li ng-repeat="subBucketObj in bucketObj.subBuckets">{{subBucketObj.name}}</li>
+					</ul> 
+				</li>
+			</ul>
+
+		</div>
+
 
 <!-- 		<div>
 			<label for="userRole">Is this user parent or child?*</label>

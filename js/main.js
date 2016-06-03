@@ -2,7 +2,7 @@
 'use strict';
 
 
-angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserController', 'EditUserController', 'ViewTransactionController', 'AddTransactionController', 'BucketService', 'EditTransactionController']).config(
+angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserController', 'EditUserController', 'ViewTransactionController', 'AddTransactionController', 'BucketService', 'EditTransactionController', 'AddBucketController', 'EditBucketController']).config(
 
 	function($stateProvider, $urlRouterProvider) {
 
@@ -20,9 +20,34 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 			controller: 'AddUserController'
 		}).
 		state('editUsers', {
-			url: '/users/edit/{userID}',
+			url: '/users/edit/{u}',
 			templateUrl: '/js/user/views/userEditView.html',
-			controller: 'EditUserController'
+			controller: 'EditUserController',
+			resolve: {
+				userData: function($stateParams, UserService, BucketService, $q) {
+
+					var currentUser = UserService.getCurrentUserID();
+
+
+					//set up promise object
+					var defer = $q.defer();
+					var info = {};
+					//make first call to get the user. If we're calling for the same user, no AJAX call
+					//needed, the promise is immediately
+					UserService.getUser($stateParams.u).then(function(data) {
+						info.user = data;	
+						//now make second call to resolve the buckets for the user
+						//(since they show up on the edit screen)
+						BucketService.getBucketsForUser($stateParams.u).then(function(data) {
+							info.buckets = data;
+							//resolve the promise
+							defer.resolve(info);
+						});
+					});
+
+					return defer.promise;
+				}				
+			}
 		}).
 		state('viewTransactionsByUser', {
 			url:'/transactions/view/{u}',
@@ -32,8 +57,8 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 				user: function($stateParams, UserService) {
 					return UserService.getUser($stateParams.u);
 				}, 
-				buckets: function($stateParams, BucketService) {
-					return BucketService.getBucketsForUser($stateParams.u);
+				buckets: function($stateParams, BucketService, UserService) {
+					return BucketService.getBucketsForUser(UserService.getCurrentUserID());
 				}
 			}
 		}).
@@ -58,6 +83,21 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 				}, 
 				buckets: function($stateParams, BucketService) {
 					return BucketService.getBucketsForUser($stateParams.u);
+				}
+			}
+		}). 
+		state('addBucket', {
+			url: '/buckets/add/{u}',
+			templateUrl: '/js/bucket/views/addBucketView.html',
+			controller: 'AddBucketController'
+		}).
+		state('editBucket', {
+			url: '/bucket/edit/{b}',
+			templateUrl: '/js/bucket/views/editBucketView.html',
+			controller: 'EditBucketController',
+			resolve: {
+				bucket: function($stateParams, BucketService) {
+					return BucketService.getOneBucket($stateParams.b);
 				}
 			}
 		});

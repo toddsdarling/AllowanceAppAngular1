@@ -1,10 +1,11 @@
 var source = require('vinyl-source-stream');
 var gulp = require('gulp');
+var gulpClean = require('gulp-clean');
 var gutil = require('gulp-util');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
-
+var usemin = require('gulp-usemin');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -73,7 +74,14 @@ function buildScript(file, watch) {
       
     //copy JS in the vendor folder over to the build folder so it gets included
     gulp.src(['./js/**/*']).pipe(gulp.dest('./build/js/'));   
-         
+
+    /*
+    gulp.src('index.html')
+    .pipe(usemin({
+      vendorjs: []
+    })
+    .pipe(gulp.dest('build/')));*/
+
     var stream = bundler.bundle();
     return stream
       .on('error', handleErrors)
@@ -97,7 +105,13 @@ function buildScript(file, watch) {
   return rebundle();
 }
 
-gulp.task('scripts', function() {  
+gulp.task('cleanScripts', function() {
+  return gulp.src('./build/js/', {read: false})
+    .pipe(gulpClean());
+});
+
+gulp.task('scripts', function() { 
+
   return buildScript('main.js', false); // this will run once because we set watch to false
 });
 

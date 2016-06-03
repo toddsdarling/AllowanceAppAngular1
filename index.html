@@ -11,7 +11,7 @@
 		<h1>Allowance App</h1>
 	</header>
 
-	<div id="main" ng-controller="UserController">
+	<div ui-view id="main">
 
 	</div>
 
@@ -21,13 +21,25 @@
 
 
 <!-- vendor JS here -->
-<script src="/build/js/vendor/angular/angular.min.js"></script>
-
+<!-- build:vendorjs /js/vendor.js -->
+<script src="/bower_components/angular/angular.min.js"></script>
+<script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<!-- endbuild -->
 
 <!-- our JS here -->
-<script src="/build/js/main.js"></script>
-<script src="/build/js/user/userService.js"></script>
-<script src="/build/js/user/userController.js"></script>
+<script src="js/user/userService.js"></script>
+<script src="js/bucket/bucketService.js"></script>
+<script src="js/transaction/transactionService.js"></script>
+<script src="js/user/controllers/userController.js"></script>
+<script src="js/user/controllers/addUser.js"></script>
+<script src="js/user/controllers/editUser.js"></script>
+<script src="js/transaction/controllers/viewTransaction.js"></script>
+<script src="js/transaction/controllers/addTransaction.js"></script>
+<script src="js/transaction/controllers/editTransaction.js"></script>
+<script src="js/bucket/controllers/addBucket.js"></script>
+<script src="js/bucket/controllers/editBucket.js"></script>
+<script src="js/main.js"></script>
+
 
 
 

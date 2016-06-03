@@ -2,12 +2,12 @@
 
 var BucketService = angular.module('BucketService', []);
 
-BucketService.factory('BucketService', ['$http', function($http) {
+BucketService.factory('BucketService', ['$http', '$q', 'UserService',  function($http, $q, UserService) {
 
 	var apiKey = 'UQLD_WO4wNXMFL-fAo5YZSjTFUnBoS9v';
 
 	var bucketsForUser = [];
-	//NEED TO REMEMBER...this will have to get set back to false if an admin
+	//this will have to get set back to false if an admin
 	//user updates buckets for this user (so that it will pull the new buckets). OR, just set the new bucket list
 	var bucketsChecked = false;
 
@@ -15,10 +15,15 @@ BucketService.factory('BucketService', ['$http', function($http) {
 
 		getBucketsForUser: function(userID) {
 
-			//check to see if we've looked for buckets before and have them.
-			//if so, just return them directly
-			if (bucketsChecked == true) {
-				return bucketsForUser;
+			//we need the current user ID from the user service to see if
+			//we're looking up buckets for the current user or another user
+			var currentUserID = UserService.getCurrentUserID();
+
+			if (bucketsChecked == true && userID === currentUserID) {
+				//set up a promise that we'll immediately resolve since the user info is already
+				var bucketPromise = $q.defer();
+				bucketPromise.resolve(bucketsForUser);
+				return bucketPromise.promise;
 			} else {
 				//if you've NEVER looked for buckets before, do it now and set the flag
 				return(
@@ -91,6 +96,7 @@ BucketService.factory('BucketService', ['$http', function($http) {
 				data: bucketObj
 			}).then(function success(data) {
 				//success function here
+				bucketsChecked = false;
 				return data.data;
 
 			}, function error(data) {
@@ -107,8 +113,8 @@ BucketService.factory('BucketService', ['$http', function($http) {
 				data: bucketObj
 			}).then(function success(data) {
 				//success function here
-				return data.data;
 				bucketsChecked = false;
+				return data.data;
 
 			}, function error(data) {
 				//error function here
@@ -143,6 +149,7 @@ BucketService.factory('BucketService', ['$http', function($http) {
 					method: 'DELETE',
 					url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/buckets/' + bucketObj._id.$oid + '?apiKey='+ apiKey
 				}).then(function success(data) {
+					bucketsChecked = false;
 					return data.data;
 				}, function error(data) {
 					return data.statusText;
