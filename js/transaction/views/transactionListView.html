@@ -1,26 +1,26 @@
 <div id="transactionList">
 
-	<h2>Transactions for {{currentUser.fname}} {{currentUser.lname}}</h2>
+	<h2>Transactions for {{CurrentUser.userInfo.fname}} {{CurrentUser.userInfo.lname}}</h2>
 		<p>Bucket totals:</p>
-		<ul ng-repeat="bucket in userBucketList">
+		<ul ng-repeat="bucket in buckets">
 			<li>Bucket: {{bucket.name}}<br />Total: {{bucket.total | currency: "$" : 2}}
 		</ul>
 
 		<p><a href="#/transactions/add?type=dep&u={{currentUser._id.$oid}}">Deposit money!</a> | <a href="#/transactions/add?type=with&u={{currentUser._id.$oid}}">Withdraw money!</a> </p>	
 
-	<div ng-if="transactionList.length === 0">
+	<div ng-if="transactions.length === 0">
 		<p>There are no transctions for this user</p>
 	</div>
 
-	<div ng-if="transactionList === undefined">
+	<div ng-if="transactions === undefined">
 		<p>Loading transactions</p>
 	</div>
 
-	<div ng-if="transactionList.length > 0">
-		<p ng-repeat="transaction in transactionList | orderBy: 'date': 'reverse'">
+	<div ng-if="transactions.length > 0">
+		<p ng-repeat="transaction in transactions | orderBy: 'date': 'reverse'">
 			Amount: {{transaction.amount}}
 			<br />
-			Bucket: {{transaction.bucket}}
+			Bucket: {{transaction.bucketName}}
 			<br/>
 			Type: {{transaction.type === 'dep' ? 'Deposit' : 'Withdrawal' }}
 			<br />

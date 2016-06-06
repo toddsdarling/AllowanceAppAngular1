@@ -1,45 +1,43 @@
 'use strict';
 
 angular.module('ViewTransactionController', ['TransactionService']);
-angular.module('ViewTransactionController').controller('ViewTransactionController', ['$scope', 'TransactionService', 'BucketService', 'user', function($scope, TransactionService, BucketService, user) {
+angular.module('ViewTransactionController').controller('ViewTransactionController', ['$scope', 'TransactionService', 'BucketService', 'CurrentUser', function($scope, TransactionService, BucketService, CurrentUser) {
 
 	$scope.buildTransactionList = function() {
 
-		//need to get transaction list for this user
-		TransactionService.getTransactionsByUser($scope.currentUser._id.$oid).then(function(data) {
-			//this doesn't fire off any AJAX calls, just filters the bucket list from the bucket service
-			$scope.userBucketList = BucketService.getBucketsForUser();
-			//match the bucket names to the IDs for the user transaction list
-			var transactionList = data;
-
-			transactionList.forEach(function(transObj, index, transList) {
+			$scope.transactions.forEach(function(transObj, index, transList) {
 
 				var bucketID = transObj.bucket;
 
-				var bucketName = BucketService.getUserBucketNameByID(bucketID);
+				var filteredBucketArr = $scope.buckets.filter(function(value, index, arr) {
+					return value._id.$oid === bucketID;
+				})
 
-				//replace the ID 
-				transList[index].bucket = bucketName;
+				if (filteredBucketArr.length > 0) {
+					//replace the ID 
+					$scope.transactions[index].bucketName = filteredBucketArr[0].name;					
+				} else {
+					$scope.transactions[index].bucketName = '';					
+				}
 
 			});
 
-			$scope.transactionList = transactionList;
+
 			$scope.buildBucketTotals();
-		});
 
 	}
 
 	$scope.buildBucketTotals = function() {
 
-		$scope.userBucketList.forEach(function(bucketObj, index, userBucketList) {
+		$scope.buckets.forEach(function(bucketObj, index, userBucketList) {
 			//loop through the bucket list
 			var bucketName = bucketObj.name;
 			//init the bucket total
 			var bucketTotal = 0;
 		
 			//use filter function to build an array of transactions for JUST that bucket
-			var transactionsForThisBucket = $scope.transactionList.filter(function(transObj, index, arr) {
-				return (transObj.bucket === bucketName);
+			var transactionsForThisBucket = $scope.transactions.filter(function(transObj, index, arr) {
+				return (transObj.bucket === bucketObj._id.$oid);
 			});
 
 			//now, loop through filtered transactions and add up the total
@@ -51,7 +49,7 @@ angular.module('ViewTransactionController').controller('ViewTransactionControlle
 				}
 			});
 
-			$scope.userBucketList[index].total = bucketTotal;
+			$scope.buckets[index].total = bucketTotal;
 
 		});
 
@@ -69,7 +67,9 @@ angular.module('ViewTransactionController').controller('ViewTransactionControlle
 
 
 	//push the resolved user into the scope so we can access it in our view
-	$scope.currentUser = user;
+	$scope.currentUser = CurrentUser.userInfo;
+	$scope.buckets = CurrentUser.buckets;
+	$scope.transactions = CurrentUser.transactions;
 	//get the transaction list (uses the transaction service)
 	$scope.buildTransactionList();
 

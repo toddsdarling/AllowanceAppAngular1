@@ -24,24 +24,22 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 			templateUrl: '/js/user/views/userEditView.html',
 			controller: 'EditUserController',
 			resolve: {
-				userData: function($stateParams, UserService, BucketService, $q) {
-
-					var currentUser = UserService.getCurrentUserID();
-
-
-					//set up promise object
+				userData: function($stateParams, UserService, BucketService, $q, CurrentUser) {
+					
+					var userInfo;
 					var defer = $q.defer();
-					var info = {};
+
 					//make first call to get the user. If we're calling for the same user, no AJAX call
-					//needed, the promise is immediately
+					//needed, the promise is immediately resolved
 					UserService.getUser($stateParams.u).then(function(data) {
-						info.user = data;	
+						userInfo = data;	
 						//now make second call to resolve the buckets for the user
 						//(since they show up on the edit screen)
 						BucketService.getBucketsForUser($stateParams.u).then(function(data) {
-							info.buckets = data;
-							//resolve the promise
-							defer.resolve(info);
+							//update the current user info AFTER everything has been resolved
+							CurrentUser.userInfo = userInfo;
+							CurrentUser.buckets = data;	
+							defer.resolve();						
 						});
 					});
 
@@ -54,11 +52,34 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 			templateUrl: '/js/transaction/views/transactionListView.html',
 			controller: 'ViewTransactionController',
 			resolve: {
-				user: function($stateParams, UserService) {
-					return UserService.getUser($stateParams.u);
-				}, 
-				buckets: function($stateParams, BucketService, UserService) {
-					return BucketService.getBucketsForUser(UserService.getCurrentUserID());
+				userData: function($stateParams, UserService, BucketService, TransactionService, $q, CurrentUser) {
+					
+					var userInfo;
+					var defer = $q.defer();
+
+					//make first call to get the user. If we're calling for the same user, no AJAX call
+					//needed, the promise is immediately resolved 
+					UserService.getUser($stateParams.u).then(function(data) {
+						userInfo = data;	
+						//now make second call to resolve the buckets for the user
+						//(since they show up on the edit screen)
+							BucketService.getBucketsForUser($stateParams.u).then(function(data) {
+							//update the current user info AFTER everything has been resolved
+							CurrentUser.userInfo = userInfo;
+							CurrentUser.buckets = data;								
+							//now make a call to get the transactions for a user
+							//once all three of these are resolved, we can move forward
+							TransactionService.getTransactionsByUser($stateParams.u).then(function(data) {
+								//update the current user info AFTER everything has been resolved
+								CurrentUser.transactions = data;
+								defer.resolve();						
+							});
+
+						});
+
+					});
+
+					return defer.promise;
 				}
 			}
 		}).
@@ -103,5 +124,10 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 		});
 	}
 
-);
+//set the CurrentUser value to be used as a reference to the current user we're acting on
+).value('CurrentUser', {
+	userInfo: {},
+	buckets: {},
+	transactions: {}
+});
 

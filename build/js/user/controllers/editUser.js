@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('EditUserController', ['UserService']);
-angular.module('EditUserController').controller('EditUserController', ['$scope', 'UserService', '$stateParams', 'userData', 'BucketService', function($scope, UserService, $stateParams, userData, BucketService) {
+angular.module('EditUserController').controller('EditUserController', ['$scope', 'UserService', '$state', '$stateParams', 'BucketService', 'CurrentUser', function($scope, UserService, $state, $stateParams, BucketService, CurrentUser) {
 
 	//set the user info on the scope. These were resolved from the promise on the router before we got to this view
-	$scope.userToBeEdited = userData.user;
-	$scope.userBuckets = userData.buckets;
+	$scope.userToBeEdited = CurrentUser.userInfo;
+	$scope.userBuckets = CurrentUser.buckets;
 
 	$scope.handleEditUser = function() {
 
@@ -33,7 +33,18 @@ angular.module('EditUserController').controller('EditUserController', ['$scope',
 	}
 
 	$scope.handleDeleteBucket = function() {
-		
+
+		if (confirm('Are you sure you want to delete this bucket?')) {
+			BucketService.deleteBucket(this.bucketObj._id.$oid).then(function(response) {
+				alert('Bucket deleted successfully!');
+
+				setTimeout(function() {
+					$state.go('/');
+				}, 500);
+			});
+		}
+
+
 	}
 
 

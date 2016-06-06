@@ -2,7 +2,7 @@
 
 var BucketService = angular.module('BucketService', []);
 
-BucketService.factory('BucketService', ['$http', '$q', 'UserService',  function($http, $q, UserService) {
+BucketService.factory('BucketService', ['$http', '$q', 'UserService', 'CurrentUser',  function($http, $q, UserService, CurrentUser) {
 
 	var apiKey = 'UQLD_WO4wNXMFL-fAo5YZSjTFUnBoS9v';
 
@@ -22,7 +22,7 @@ BucketService.factory('BucketService', ['$http', '$q', 'UserService',  function(
 			if (bucketsChecked == true && userID === currentUserID) {
 				//set up a promise that we'll immediately resolve since the user info is already
 				var bucketPromise = $q.defer();
-				bucketPromise.resolve(bucketsForUser);
+				bucketPromise.resolve(CurrentUser.buckets);
 				return bucketPromise.promise;
 			} else {
 				//if you've NEVER looked for buckets before, do it now and set the flag
@@ -30,10 +30,9 @@ BucketService.factory('BucketService', ['$http', '$q', 'UserService',  function(
 					$http({
 						method:'GET',
 						url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/buckets?apiKey=' + apiKey + '&q={"user":"' + userID + '"}'
-					}).then(function success(data) {
-						bucketsForUser = data.data;
+					}).then(function success(data) {						
 						bucketsChecked = true;
-						return bucketsForUser;
+						return data.data;
 					}, function error(data) {
 						return data.statusText;
 					})
@@ -142,12 +141,12 @@ BucketService.factory('BucketService', ['$http', '$q', 'UserService',  function(
 
 		}, 
 
-		//deletes a single transaction by ID
-		deleteBucket: function(bucketObj) {
+		//deletes a single bucket by ID
+		deleteBucket: function(id) {
 			return(
 				$http({
 					method: 'DELETE',
-					url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/buckets/' + bucketObj._id.$oid + '?apiKey='+ apiKey
+					url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/buckets/' + id + '?apiKey='+ apiKey
 				}).then(function success(data) {
 					bucketsChecked = false;
 					return data.data;

@@ -2,10 +2,9 @@
 
 var UserService = angular.module('UserService', []);
 
-UserService.factory('UserService', ['$http', '$q', function($http, $q) {
+UserService.factory('UserService', ['$http', '$q', 'CurrentUser', function($http, $q, CurrentUser) {
 
 	var apiKey = 'UQLD_WO4wNXMFL-fAo5YZSjTFUnBoS9v';
-	var currentUser = {};
 
 	return {
 
@@ -47,10 +46,13 @@ UserService.factory('UserService', ['$http', '$q', function($http, $q) {
 		//get a single user by ID 
 		getUser: function(id) {
 
-			if (currentUser.hasOwnProperty("_id") && currentUser._id.$oid === id) {
-				//set up a promise that we'll immediately resolve since the user info is already
+			var currentUserID = this.getCurrentUserID();
+
+			if (currentUserID === id) {
+				//if the user you want is already the current user, set up a promise that you'll immediately
+				//resolve with current user data
 				var userPromise = $q.defer();
-				userPromise.resolve(currentUser);
+				userPromise.resolve(CurrentUser.userInfo);
 				return userPromise.promise;
 			} else {
 				return(
@@ -58,10 +60,7 @@ UserService.factory('UserService', ['$http', '$q', function($http, $q) {
 					method:'GET',
 					url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/users/'+ id +'?apiKey='+ apiKey,
 				}).then(function success(data) {
-					//success function here, set the current user
-					currentUser = data.data;
 					return data.data;
-
 				}, function error(data) {
 					//error function here
 					return data.statusText;
@@ -99,10 +98,18 @@ UserService.factory('UserService', ['$http', '$q', function($http, $q) {
 			}	
 		}, 
 
+		//made this a small utility function so that I didn't have to keep retyping 
+		//the _id.$oid
 		getCurrentUserID: function() {
-			return currentUser._id.$oid;
-		}
 
+			if (CurrentUser.userInfo.hasOwnProperty('_id')) {
+				return CurrentUser.userInfo._id.$oid;
+			} else {
+				return null;
+			}
+
+			
+		}
 	}
 
 }]);
