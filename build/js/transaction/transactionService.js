@@ -99,7 +99,7 @@ TransactionService.factory('TransactionService', ['$http', 'CurrentUser', functi
 					url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/transactions/' + transID + '?apiKey='+ apiKey
 				}).then(function success(data) {
 
-					//remove it from the transaction list
+					//filter the transaction OUT of the current user's list
 					CurrentUser.transactions = CurrentUser.transactions.filter(function(transObj, index, arr) {
 						return transObj._id.$oid !== data.data._id.$oid;		
 					});
