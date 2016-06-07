@@ -1,12 +1,12 @@
 <div id="transactionList">
 
-	<h2>Transactions for {{CurrentUser.userInfo.fname}} {{CurrentUser.userInfo.lname}}</h2>
+	<h2>Transactions for {{userInfo.fname}} {{userInfo.lname}}</h2>
 		<p>Bucket totals:</p>
 		<ul ng-repeat="bucket in buckets">
 			<li>Bucket: {{bucket.name}}<br />Total: {{bucket.total | currency: "$" : 2}}
 		</ul>
 
-		<p><a href="#/transactions/add?type=dep&u={{currentUser._id.$oid}}">Deposit money!</a> | <a href="#/transactions/add?type=with&u={{currentUser._id.$oid}}">Withdraw money!</a> </p>	
+		<p><a href="#/transactions/add?type=dep&u={{userInfo._id.$oid}}">Deposit money!</a> | <a href="#/transactions/add?type=with&u={{userInfo._id.$oid}}">Withdraw money!</a> </p>	
 
 	<div ng-if="transactions.length === 0">
 		<p>There are no transctions for this user</p>
@@ -20,13 +20,13 @@
 		<p ng-repeat="transaction in transactions | orderBy: 'date': 'reverse'">
 			Amount: {{transaction.amount}}
 			<br />
-			Bucket: {{transaction.bucketName}}
+			Bucket: {{getBucketNameByID(transaction.bucket)}}
 			<br/>
 			Type: {{transaction.type === 'dep' ? 'Deposit' : 'Withdrawal' }}
 			<br />
 			Date: {{transaction.date | date: 'MM/dd/yyyy'}}
 			<br />
-			<a ng-click="handleDeleteTransaction(transaction._id.$oid)">Delete transaction</a> | <a href="#/transactions/edit?t={{transaction._id.$oid}}&u={{currentUser._id.$oid}}">Edit transaction</a>
+			<a ng-click="handleDeleteTransaction(transaction._id.$oid)">Delete transaction</a> | <a href="#/transactions/edit?t={{transaction._id.$oid}}&u={{userInfo._id.$oid}}">Edit transaction</a>
 		</p>
 	</div>
 

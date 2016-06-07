@@ -5,8 +5,7 @@ var BucketService = angular.module('BucketService', []);
 BucketService.factory('BucketService', ['$http', '$q', 'UserService', 'CurrentUser',  function($http, $q, UserService, CurrentUser) {
 
 	var apiKey = 'UQLD_WO4wNXMFL-fAo5YZSjTFUnBoS9v';
-
-	var bucketsForUser = [];
+	
 	//this will have to get set back to false if an admin
 	//user updates buckets for this user (so that it will pull the new buckets). OR, just set the new bucket list
 	var bucketsChecked = false;
@@ -44,11 +43,13 @@ BucketService.factory('BucketService', ['$http', '$q', 'UserService', 'CurrentUs
 			
 			var bucketName = '';
 
-			bucketsForUser.forEach(function(whichBucket, index, array) {
-				if (whichBucket._id.$oid === bucketID) {
-					bucketName =  whichBucket.name;
-				}
+			var bucketWanted = CurrentUser.buckets.filter(function(bucketObj, index, arr) {
+				return (bucketID === bucketObj._id.$oid);
 			});
+
+			if (bucketWanted.length > 0) {
+				bucketName = bucketWanted[0].name;	
+			}
 
 			return bucketName;
 		},

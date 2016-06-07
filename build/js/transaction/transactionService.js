@@ -2,7 +2,7 @@
 
 var TransactionService = angular.module('TransactionService', []);
 
-TransactionService.factory('TransactionService', ['$http', function($http) {
+TransactionService.factory('TransactionService', ['$http', 'CurrentUser', function($http, CurrentUser) {
 
 	var apiKey = 'UQLD_WO4wNXMFL-fAo5YZSjTFUnBoS9v';
 
@@ -98,6 +98,13 @@ TransactionService.factory('TransactionService', ['$http', function($http) {
 					method: 'DELETE',
 					url: 'https://api.mongolab.com/api/1/databases/allowanceapp/collections/transactions/' + transID + '?apiKey='+ apiKey
 				}).then(function success(data) {
+
+					//remove it from the transaction list
+					CurrentUser.transactions = CurrentUser.transactions.filter(function(transObj, index, arr) {
+						return transObj._id.$oid !== data.data._id.$oid;		
+					});
+
+
 					return data.data;
 				}, function error(data) {
 					return data.statusText;

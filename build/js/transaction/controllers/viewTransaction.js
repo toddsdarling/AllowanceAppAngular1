@@ -3,25 +3,13 @@
 angular.module('ViewTransactionController', ['TransactionService']);
 angular.module('ViewTransactionController').controller('ViewTransactionController', ['$scope', 'TransactionService', 'BucketService', 'CurrentUser', function($scope, TransactionService, BucketService, CurrentUser) {
 
+	console.log(CurrentUser);
+
 	$scope.buildTransactionList = function() {
 
-			$scope.transactions.forEach(function(transObj, index, transList) {
-
-				var bucketID = transObj.bucket;
-
-				var filteredBucketArr = $scope.buckets.filter(function(value, index, arr) {
-					return value._id.$oid === bucketID;
-				})
-
-				if (filteredBucketArr.length > 0) {
-					//replace the ID 
-					$scope.transactions[index].bucketName = filteredBucketArr[0].name;					
-				} else {
-					$scope.transactions[index].bucketName = '';					
-				}
-
-			});
-
+			//set the transaction list = the data from the model.  Anytime the model gets update
+			//we just call this function which will update both the list and the bucket totals
+			$scope.transactions = CurrentUser.transactions;
 
 			$scope.buildBucketTotals();
 
@@ -65,12 +53,16 @@ angular.module('ViewTransactionController').controller('ViewTransactionControlle
 		});
 	}
 
+	$scope.getBucketNameByID = function(whichID) {		
+		return BucketService.getUserBucketNameByID(whichID);
+	}
 
-	//push the resolved user into the scope so we can access it in our view
-	$scope.currentUser = CurrentUser.userInfo;
+
+	/* push the resolved user into the scope so we can access it in our view */ 	
+	$scope.userInfo = CurrentUser.userInfo;
 	$scope.buckets = CurrentUser.buckets;
-	$scope.transactions = CurrentUser.transactions;
-	//get the transaction list (uses the transaction service)
+
 	$scope.buildTransactionList();
+
 
 }]);
