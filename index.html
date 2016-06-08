@@ -3,12 +3,21 @@
 <head>
   <meta charset="utf-8">
   <title>My HTML File</title>
-  
+
+	<!-- vendor CSS here -->
+	<!-- build:vendorcss /css/vendor.css -->
+		<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+	<!-- endbuild -->
+
 </head>
 <body>
 
 	<header class="appHeader" id="header">
-		<h1>Allowance App</h1>
+		<div class="ui inverted segment">
+		  <div class="ui inverted secondary pointing menu">
+		    	<h1>Allowance App</h1>
+		  </div>
+		</div>
 	</header>
 
 	<div ui-view id="main">
@@ -24,6 +33,7 @@
 <!-- build:vendorjs /js/vendor.js -->
 <script src="/bower_components/angular/angular.min.js"></script>
 <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+
 <!-- endbuild -->
 
 <!-- our JS here -->
