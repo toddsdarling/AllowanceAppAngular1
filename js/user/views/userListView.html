@@ -1,4 +1,4 @@
-<div id="userList">
+<div id="c-dashboardUserList">
 
 	<div ng-if="userList.length === 0">
 		<p>There are no users</p>
@@ -6,45 +6,35 @@
 	</div>
 
 	<div ng-if="userList === undefined">
-		<p>Loading users</p>
+	  <div class="ui active inverted dimmer">
+	    <div class="ui text loader">Loading</div>
+	  </div>
 	</div>
 
 	<div ng-if="userList.length > 0">
 
-
-		<div class="ui cards">
-		  <div class="card">
-		    <div class="content">
-		      <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg">
-		      <div class="header">
-		        {{user.fname}} {{user.lname}}
-		      </div>
-		    </div>
-		    <div class="extra content">
-		      <div class="ui two buttons">
-		        <div class="ui basic green button">Transaction</div>
-		        <div class="ui basic red button">Edit User</div>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-
-
-
 		<div class="ui cards" ng-repeat="user in userList">
 
-		  <div class="card">
+		  <div class="card c-dashboardUserList__card">
 		    <div class="content">
-		      <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg">
+		      <!-- <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg"> -->
 		      <div class="header">
 		        {{user.fname}} {{user.lname}}
 		      </div>
+		      <a href="#/transactions/view/{{user._id.$oid}}">View totals</a>
 		    </div>
 		    <div class="extra content">
 		      <div class="ui two buttons">
-		        <div href="#/users/edit/{{user._id.$oid}}" class="ui basic green button">Transaction</div>
-		        <div href="#/transactions/view/{{user._id.$oid}}" class="ui basic red button">Edit User</div>
+		        <a ui-sref="depositInline" class="ui green button c-dashboardUserList__actionBtn"><i class="add square icon"></i> Deposit</a>
+		        <a ng-click="handleUserListAction()" href="#/transactions/add?type=with&u={{user._id.$oid}}" class="ui olive button c-dashboardUserList__actionBtn"><i class="add minus square icon"></i> Withdraw</a>			        	     
 		      </div>
+
+		      <div ui-view="depositInline">
+		      	
+		      </div>
+
+				
+
 		    </div>
 		  </div>
 		</div>
