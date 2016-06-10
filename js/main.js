@@ -12,24 +12,26 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 		.state('/', {
 			url:'/',
 			templateUrl: '/js/user/views/userListView.html',
-			controller: 'ListUserController',
+			controller: 'ListUserController'							
+		}).
+		state('depositInline', {
+			url: 'transactions/add?type={whichType}&u={userID}',
+			parent:'/',
 			views: {
-				"app": {
-					templateUrl: '/js/user/views/userListView.html',
-					controller: 'ListUserController'
-				},
-				"/depositInline": {
-					url: '/transactions/add?type={whichType}&u={userID}',
+				'depositInlineContainer': {
 					controller: 'AddTransactionController',
-					templateUrl: '/js/transaction/views/transactionAddView.html',
+					templateUrl: '/js/transaction/views/transactionAddView.html',				
 					resolve: {
 						buckets: function($stateParams,BucketService) {
 							//need to have the buckets BEFORE going to this state									
 							return BucketService.getBucketsForUser($stateParams.u);
+						},
+						callback: function(this) {
+							return this.handleInlineTransactionSuccess;
 						}
-					}					
-				}					
-			}			
+					}				
+				}
+			}
 		}).
 		state('addUsers', {
 			url:'/users/add',

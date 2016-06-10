@@ -3,7 +3,7 @@
 angular.module('ListUserController', ['UserService']);
 angular.module('ListUserController').controller('ListUserController', ['$scope', 'UserService', '$http', function($scope, UserService, $http) {
 
-	$scope.transactionTemplate = "";
+	$scope.inlineTransactionForUser = "";
 
 	//need to wrap this in a promise so the user list will be set correctly
 
@@ -12,13 +12,15 @@ angular.module('ListUserController').controller('ListUserController', ['$scope',
 		$scope.userList = data;
 	});
 
-	$scope.handleUserListAction = function() {
+	$scope.handleUserListAction = function(whichUser) {
 		console.log('button clicked');
 		//stop default event
 		//event.preventDefault();
 
 		//get the href
-		var whichAction = event.currentTarget.href;
+		$scope.inlineTransactionForUser = whichUser;
+
+
 
 		//$scope.transactionTemplate = whichAction;
 

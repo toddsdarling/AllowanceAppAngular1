@@ -25,11 +25,11 @@
 		    </div>
 		    <div class="extra content">
 		      <div class="ui two buttons">
-		        <a ui-sref="depositInline" class="ui green button c-dashboardUserList__actionBtn"><i class="add square icon"></i> Deposit</a>
-		        <a ng-click="handleUserListAction()" href="#/transactions/add?type=with&u={{user._id.$oid}}" class="ui olive button c-dashboardUserList__actionBtn"><i class="add minus square icon"></i> Withdraw</a>			        	     
+		        <a ng-click="handleUserListAction(user._id.$oid)" ui-sref="depositInline({type: 'dep', u: '{{user._id.$oid}}'})" class="ui green button c-dashboardUserList__actionBtn"><i class="add square icon"></i> Deposit</a>
+		        <a ng-click="handleUserListAction(user._id.$oid)" ui-sref="depositInline({type: 'with', u: '{{user._id.$oid}}'})" class="ui olive button c-dashboardUserList__actionBtn"><i class="add minus square icon"></i> Withdraw</a>
 		      </div>
 
-		      <div ui-view="depositInline">
+		      <div ui-view="depositInlineContainer" ng-show="inlineTransactionForUser === '{{user._id.$oid}}'">
 		      	
 		      </div>
 

@@ -14,6 +14,11 @@ angular.module('AddTransactionController').controller('AddTransactionController'
 		date: new Date()
 	}
 
+	console.log($stateParams);
+
+
+	$scope.transactionSuccessCallBack;
+
 	$scope.handleTransactionAdd = function() {
 
 		var allGood = TransactionService.validateTransactionFields($scope.transactionToBeAdded);
