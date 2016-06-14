@@ -42,4 +42,8 @@ angular.module('AddTransactionController').controller('AddTransactionController'
 
 	}
 
+	$scope.handleInlineTransactionSuccess = function() {
+		console.log('added inline transaction');
+	}
+
 }]);

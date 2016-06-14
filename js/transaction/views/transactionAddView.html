@@ -2,18 +2,18 @@
 
 	<form ng-submit="handleTransactionAdd()">
 
-		<div>
-			<label ng-show="transactionToBeAdded.type == 'dep'" for="transactionAmount">Amount to deposit*:</label>
-			<label ng-show="transactionToBeAdded.type == 'with'" for="transactionAmount">Amount to withdraw*:</label> 
-			<input id="transactionAmount" ng-model="transactionToBeAdded.amount" name="transactionAmount">
-		</div>
-
-		<div>
-			<label for="transactionBucket">Bucket*:</label>
-			<select name="transactionBucket" ng-model="transactionToBeAdded.bucket" id="transactionBucket">
-				<option ng-repeat="bucket in buckets" value="{{bucket._id.$oid}}">{{bucket.name}}</option>
-			</select>			
-		</div>
+		<div class="ui grid">
+			<div class="eight wide column">
+				<label ng-show="transactionToBeAdded.type == 'dep'" for="transactionAmount">Amount*:</label>
+				<input id="transactionAmount" ng-model="transactionToBeAdded.amount" name="transactionAmount">
+			</div>
+			<div class="eight wide column">
+				<label for="transactionBucket">Bucket*:</label>
+					<select name="transactionBucket" ng-model="transactionToBeAdded.bucket" id="transactionBucket">
+						<option ng-repeat="bucket in buckets" value="{{bucket._id.$oid}}">{{bucket.name}}</option>
+					</select>
+			</div>			
+		<div>					
 
 		<div ng-if="transactionToBeAdded.type === 'dep'">
 			<p><input type="submit" name="Deposit" value="Deposit" /></p>

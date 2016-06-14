@@ -16,27 +16,41 @@
 		<div class="ui cards" ng-repeat="user in userList">
 
 		  <div class="card c-dashboardUserList__card">
-		    <div class="content">
-		      <!-- <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg"> -->
-		      <div class="header">
-		        {{user.fname}} {{user.lname}}
-		      </div>
-		      <a href="#/transactions/view/{{user._id.$oid}}">View totals</a>
-		    </div>
-		    <div class="extra content">
-		      <div class="ui two buttons">
-		        <a ng-click="handleUserListAction(user._id.$oid)" ui-sref="depositInline({type: 'dep', u: '{{user._id.$oid}}'})" class="ui green button c-dashboardUserList__actionBtn"><i class="add square icon"></i> Deposit</a>
-		        <a ng-click="handleUserListAction(user._id.$oid)" ui-sref="depositInline({type: 'with', u: '{{user._id.$oid}}'})" class="ui olive button c-dashboardUserList__actionBtn"><i class="add minus square icon"></i> Withdraw</a>
-		      </div>
 
-		      <div ui-view="depositInlineContainer" ng-show="inlineTransactionForUser === '{{user._id.$oid}}'">
-		      	
-		      </div>
+		  	<div class="content">
+			  	<!-- <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg"> -->
+			  	<div class="header">
+					{{user.fname}} {{user.lname}}
+			  	</div>
+			  	<a href="#/transactions/view/{{user._id.$oid}}">View totals</a>
+		  	</div>
 
-				
+		  	<div class="extra content u-flip-container">
 
-		    </div>
+		  		<div class="u-flipper">
+
+		  			<div class="u-flipper__front">
+				        <a ng-click="handleUserListAction()" ui-sref="transactionInline({type: 'dep', u: '{{user._id.$oid}}'})" class="ui green button c-dashboardUserList__actionBtn"><i class="add square icon"></i> Deposit</a>
+				        <a ng-click="handleUserListAction()" ui-sref="transactionInline({type: 'with', u: '{{user._id.$oid}}'})" class="ui olive button c-dashboardUserList__actionBtn"><i class="add minus square icon"></i> Withdraw</a>
+		  			</div>
+
+		  			<div class="u-flipper__back">
+
+						<div ui-view="depositInlineContainer" ng-show="inlineTransactionForUser === '{{user._id.$oid}}'">
+								      	
+						</div>		  				
+
+
+		  			</div>
+
+
+		  		</div>
+		  	</div>
+			
 		  </div>
+
+		  </div>
+
 		</div>
 
 		<p><a href="#/users/add">Click here to add a user</a></p>

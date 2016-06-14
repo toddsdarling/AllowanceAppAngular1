@@ -14,7 +14,7 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 			templateUrl: '/js/user/views/userListView.html',
 			controller: 'ListUserController'							
 		}).
-		state('depositInline', {
+		state('transactionInline', {
 			url: 'transactions/add?type={whichType}&u={userID}',
 			parent:'/',
 			views: {
@@ -25,9 +25,6 @@ angular.module('AllowanceApp', ['ui.router', 'ListUserController', 'AddUserContr
 						buckets: function($stateParams,BucketService) {
 							//need to have the buckets BEFORE going to this state									
 							return BucketService.getBucketsForUser($stateParams.u);
-						},
-						callback: function(this) {
-							return this.handleInlineTransactionSuccess;
 						}
 					}				
 				}
